@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html dir="ltr" mozdisallowselectionprint moznomarginboxes>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="external/bootstrap.min.css"/>
+  <link rel="stylesheet" href="external/pdf.js/web/viewer.css"/>
+  <link rel="stylesheet" href="index.css"/>
+  <script src="external/pollyfill.js"></script>
+  <script src="external/pdf.js/build/pdf.js"></script>
+  <script src="index.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div id="pdfs" class="row"></div>
+</div>
+
+<div id="fragments" style="display: none;">
+  <div class="pdf col-md-4">
+    <div style="width: 209px">
+      <a class="thumbnail" data-loaded="true">
+        <div class="thumbnailSelectionRing">
+          <div class="thumbnailImage box">
+            <div class="title">Title</div>
+          </div>
+        </div>
+      </a>
+      <div class="offline">
+        <div style="float: left;">Available Offline</div><label><input type="checkbox" class="ios-switch" /><div><div></div></div></label>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
