@@ -14,3 +14,17 @@ if (!HTMLCanvasElement.prototype.toBlob) {
   }
  });
 }
+
+if (!window.caches) {
+  // TODO: make this a proper polyfill with index db.
+  window.caches = {
+    match: function () {
+      return Promise.resolve();
+    },
+    open: function () {
+      return Promise.resolve({
+        put: function () { return Promise.resolve(); }
+      });
+    }
+  }
+}

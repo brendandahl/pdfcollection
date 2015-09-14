@@ -50,8 +50,13 @@ var PdfCollection = (function() {
   }
 
   function setupOffline(pdf, makeOfflineDiv) {
-    makeOfflineDiv.addEventListener('click', function() {
-      if (makeOfflineDiv.checked) {
+    if (typeof CacheStorage === "undefined") {
+      makeOfflineDiv.style.display = 'none';
+      return;
+    }
+    var checkBox = makeOfflineDiv.querySelector('input[type="checkbox"]');
+    checkBox.addEventListener('click', function() {
+      if (checkBox.checked) {
         fetch(pdf.filename).then(function(response) {
           return caches.open('pdfs').then(function(cache) {
             return cache.put(pdf.filename, response);
@@ -68,7 +73,7 @@ var PdfCollection = (function() {
       if (!response) {
         return;
       }
-      makeOfflineDiv.checked = true;
+      checkBox.checked = true;
     });
   }
 
@@ -95,7 +100,7 @@ var PdfCollection = (function() {
       pdfDiv.querySelector('.title').textContent = pdf.title;
       pdfDiv.querySelector('.thumbnail').href = 'external/pdf.js/web/viewer.html?file=../../../' + pdf.filename;
 
-      setupOffline(pdf, pdfDiv.querySelector('input[type="checkbox"]'));
+      setupOffline(pdf, pdfDiv.querySelector('.offline'));
 
       setupThumbnail(pdf, pdfDiv.querySelector('.thumbnailImage'));
 
@@ -114,13 +119,15 @@ var PdfCollection = (function() {
   };
 })();
 
-navigator.serviceWorker.register('sw.js').then(function(registration) {
-  // Registration was successful
-  registration.update();
-  console.log('ServiceWorker registration successful with scope: ',    registration.scope);
-}).catch(function(err) {
-  console.log('ServiceWorker registration failed: ', err);
-});
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.register('sw.js').then(function(registration) {
+    // Registration was successful
+    registration.update();
+    console.log('ServiceWorker registration successful with scope: ',    registration.scope);
+  }).catch(function(err) {
+    console.log('ServiceWorker registration failed: ', err);
+  });
+}
 
 document.addEventListener('DOMContentLoaded', function () {
   PdfCollection.init({
